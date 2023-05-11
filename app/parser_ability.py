@@ -30,9 +30,15 @@ def parse_json(init_json, platform):
         executor = element["executors"][0]
         parser = executor['parsers']
         
+        requirements = []
+        if len(element['requirements']) != 0:
+            for i in element['requirements']:
+                requirements.append(i["relationship_match"][0]["source"])
+
         unlocks = []
         if len(parser) != 0:
-            unlocks = parser[0]["parserconfigs"][0]["source"]
+            for i in parser[0]["parserconfigs"]:
+                unlocks.append(i["source"])
         
         new_obj = {
             "id":  element["ability_id"],
@@ -41,7 +47,7 @@ def parse_json(init_json, platform):
             "tactic":  element["tactic"],
             "technique":  element["technique_name"],
             "platform": executor["platform"],
-            "requirements":  element["requirements"],
+            "requirements":  requirements,
             "command":  executor["command"],
             "unlocks":  unlocks,
         }
