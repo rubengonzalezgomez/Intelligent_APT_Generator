@@ -1,2 +1,1 @@
-# apt_generator
-Intelligent APT generator
+# Intelligent_APT_Generator
