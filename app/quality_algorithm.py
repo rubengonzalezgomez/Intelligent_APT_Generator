@@ -13,14 +13,20 @@ def init_algorithm(abilities,target):
 def _set_target(abilities,target):
 
     target_command_dictionary_ = {
-        0: 'json index command 1',
+        0: 'd754878c-17dd-46dc-891c-a993f8a10336',
         1: 'json index command 2',
         2: 'json index command 3'
         # etc... revisar y definir
     }    
 
     target = target_command_dictionary_.get(target)
-    target_requirements = abilities[target]
+
+    for i, ability in enumerate(abilities):
+        if ability.get("id") == target:
+            target = i
+            break
+    
+    target_requirements = abilities[target]['requirements']
 
     return target, target_requirements
 
@@ -29,10 +35,10 @@ def _update_qualities(abilities,target_requirements):
     
     for i, ability in enumerate(abilities):
         req_ok = _check_req_ok(ability, requirements_unlocked)
-        
+
 
 def _check_req_ok(ability, requirements_unlocked):
-    requirementes = ability['requiriments']
+    requirementes = ability['requirements']
     if len(requirementes) == 0: 
         return 1
     else:

@@ -3,6 +3,7 @@ import sys
 import api_requests
 import parser_ability
 import argparse
+import quality_algorithm
 
 # Creamos el objeto ArgumentParser
 parser = argparse.ArgumentParser(description='Creación de una APT inteligente para Mitre Caldera')
@@ -30,7 +31,9 @@ def ability_parser(platform):
     # Creamos JSON con las habilidades de la plataforma seleccionada
     platform = dictionary_platform.get(platform)
     print("Seleccionadas habilidades de " + platform + "\n")
-    parser_ability.filter_platform(platform)
+    return parser_ability.filter_platform(platform)
+
+    
 
 
 
@@ -44,3 +47,4 @@ print("Habilidades de Mitre Caldera cargadas\n")
 # Parseamos las habilidades obtenidas dependiendo de la plataforma seleccionada
 abilities = ability_parser(args.platform)
 
+quality_algorithm.init_algorithm(abilities,0)
