@@ -1,7 +1,7 @@
 import sys
 
 import api_requests
-import parse_ability
+import parser_ability
 import argparse
 
 # Creamos el objeto ArgumentParser
@@ -30,7 +30,7 @@ def ability_parser(platform):
     # Creamos JSON con las habilidades de la plataforma seleccionada
     platform = dictionary_platform.get(platform)
     print("Seleccionadas habilidades de " + platform + "\n")
-    parse_ability.filter_platform(platform)
+    parser_ability.filter_platform(platform)
 
 
 
@@ -42,5 +42,5 @@ api_requests.get_abilities(args.cookie)
 print("Habilidades de Mitre Caldera cargadas\n")
 
 # Parseamos las habilidades obtenidas dependiendo de la plataforma seleccionada
-ability_parser(args.platform)
+abilities = ability_parser(args.platform)
 
