@@ -42,7 +42,7 @@ def get_abilities(cookie):
         response = response.json()
 
         # Guardamos la salida en un fichero JSON
-        with open('data/abilities.json', 'w') as archivo:
+        with open('../data/abilities.json', 'w') as archivo:
             json.dump(response,archivo)
 
 

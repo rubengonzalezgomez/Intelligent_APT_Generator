@@ -6,7 +6,7 @@ import json
 def filter_platform(platform):
 
     # Leer el archivo JSON y convertirlo a un diccionario Python
-    with open('data/abilities.json', 'r') as f:
+    with open('../data/abilities.json', 'r') as f:
         data = json.load(f)
 
     # Filtrar los objetos que contienen el valor del parámetro platform en el array 'executors'
@@ -49,7 +49,7 @@ def parse_json(init_json, platform):
         final_json.append(new_obj)
     
     # Escribimos en un fichero para que sea más fácil de visualizar y nos ayude en el desarrollo pero NO es necesario
-    with open('data/' + platform + '_abilities_parsed.json','w') as f:
+    with open('../data/' + platform + '_abilities_parsed.json','w') as f:
         json.dump(final_json,f)
 
     return final_json
