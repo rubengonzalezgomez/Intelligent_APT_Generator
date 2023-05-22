@@ -55,7 +55,7 @@ def parse_json(init_json, platform):
         final_json.append(new_obj)
     
     # Escribimos en un fichero para que sea más fácil de visualizar y nos ayude en el desarrollo pero NO es necesario
-    with open('../data/' + platform + '_abilities_parsed.json','w') as f:
+    with open('../data/' + platform + '_abilities_parsered.json','w') as f:
         json.dump(final_json,f)
 
     return final_json
