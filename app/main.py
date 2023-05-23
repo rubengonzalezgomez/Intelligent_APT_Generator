@@ -1,5 +1,5 @@
 import sys
-import api_requests
+import api_comunicator as api
 import parser_ability
 import argparse
 
@@ -16,7 +16,7 @@ parser.add_argument('-p', '--platform', type=int, required=True, help='Plataform
 args = parser.parse_args()
 
 # Parseamos las habilidades de la plataforma seleccionada
-def ability_parser(platform):
+def platform_translator(platform):
 
     if platform not in [0,1,2]:
         print("Error: Plataforma seleccionada no válida. Introduzca un valor válido. 0:Linux; 1:Windows; 2:Darwin ")
@@ -31,18 +31,22 @@ def ability_parser(platform):
     # Creamos JSON con las habilidades de la plataforma seleccionada
     platform = dictionary_platform.get(platform)
     print("Seleccionadas habilidades de " + platform + "\n")
-    return parser_ability.filter_platform(platform)
+    return platform
 
 
 # INICIO EJECUCIÓN
 print("\n\nBIENVENIDO A INTELLIGENT APT\n\n")
 
 # Cargamos todas las habilidades de Caldera
-api_requests.get_abilities(args.cookie)
+api = api.comunicator()
+api.get_abilities(args.cookie)
 print("Habilidades de Mitre Caldera cargadas\n")
 
 # Parseamos las habilidades obtenidas dependiendo de la plataforma seleccionada
-abilities = ability_parser(args.platform)
+platform = platform_translator(args.platform)
+parser = parser_ability.parser()
+abilities = parser.filter_platform(platform)
 
-trainer = trainer.trainer(100,100,abilities) # Instanciamos un objeto que crea y entrena a la red neuronal
+# Instanciamos el objeto que crea y entrena a la red neuronal
+trainer = trainer.trainer(100,100,abilities) 
 trainer.train()

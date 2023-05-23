@@ -29,7 +29,7 @@ class DQNAgent:
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
     def act(self, state):
-        state = np.array(state).reshape(1, self.state_size)
+        state = np.array(state, dtype=object).reshape(1, self.state_size)
         if np.random.rand() <= self.epsilon:
             return random.choice(self.actions)
         else:
@@ -38,6 +38,10 @@ class DQNAgent:
             return self.actions[action_index]
 
     def train(self, state, action, reward, next_state, done):
+        #state = np.array(state, dtype=object).reshape(1, self.state_size)
+        max_length = max(len(x) for x in state)  # Obtener la longitud máxima de las sublistas
+        state = np.array([x + [None] * (max_length - len(x)) if isinstance(x, list) else x for x in state])
+        state = np.concatenate(state).reshape(1, -1)
         target = reward
         if not done:
             target = reward + 0.99 * np.amax(self.model.predict(next_state)[0])

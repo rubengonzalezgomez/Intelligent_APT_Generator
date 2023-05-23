@@ -5,7 +5,7 @@ import calculateReward
 class CustomEnvironment:
     # Definimos el estado inicial como una tupla con 0 requisitos desbloqueados y la táctica inicial
     initial_state = ([],"reconnaissance") 
-    target = "id_comando_objetivo"
+    target = "ba0deadb-97ac-4a4c-aa81-21912fc90980"
     target_requirements = []
 
     def __init__(self, actions):
@@ -41,8 +41,9 @@ class CustomEnvironment:
 
     def step(self, action):
         # Tomar la acción en el entorno y obtener el siguiente estado, la recompensa y la señal de finalización
-        next_state = self.calculate_next_state(self.state, action)
-        reward = self.calculator.calculate(action)
+        next_state = self.calculate_next_state(action)
+        unlocked_reqs = list(self.state[0])
+        reward = self.calculator.calculate(action,unlocked_reqs, self.state[1],self.target_requirements)
         done = self.check_if_done(next_state)
         self.state = next_state
         return next_state, reward, done
