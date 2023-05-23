@@ -3,8 +3,7 @@ import api_requests
 import parser_ability
 import argparse
 
-import DeepQLearning as DQ
-import train
+import trainer
 
 # Creamos el objeto ArgumentParser
 parser = argparse.ArgumentParser(description='Creación de una APT inteligente para Mitre Caldera')
@@ -45,5 +44,5 @@ print("Habilidades de Mitre Caldera cargadas\n")
 # Parseamos las habilidades obtenidas dependiendo de la plataforma seleccionada
 abilities = ability_parser(args.platform)
 
-agent = DQ.DQNAgent(abilities) # Instanciamos un objeto con la red neuronal
-trainer = train.train(agent) # Instanciamos un objeto que entrene al modelo
+trainer = trainer.trainer(100,100,abilities) # Instanciamos un objeto que crea y entrena a la red neuronal
+trainer.train()

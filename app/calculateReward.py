@@ -81,10 +81,10 @@ class calculateRewrd:
                 if i == tactic:
                     self.abilitiesPerTactic[i] += 1
     
-    def calculate(self,target_requirements,ability):
+    def calculate(self,ability):
         req_ok = self.check_req_ok(ability, self.requirements_unlocked)
-        req_match = self.check_req_match(ability,target_requirements)  
+        req_match = self.check_req_match(ability,self.target_requirements)  
         tactic = self.get_tactic_index(ability['tactic'])
         prob_tactic = self.get_probability(tactic)
-        reward = req_ok * (prob_tactic/self.abilitiesPerTactic[tactic] + req_match/len(target_requirements))
+        reward = req_ok * (prob_tactic/self.abilitiesPerTactic[tactic] + req_match/len(self.target_requirements))
         return reward

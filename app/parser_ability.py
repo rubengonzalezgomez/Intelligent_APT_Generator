@@ -59,5 +59,3 @@ def parse_json(init_json, platform):
         json.dump(final_json,f)
 
     return final_json
-
-    
