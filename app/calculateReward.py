@@ -7,16 +7,17 @@ class calculateRewrd:
         0: "reconnaissance",
         1: "initial-access",
         2: "execution",
-        3: "persistence",
-        4: "privilege-escalation",
-        5: "defense-evasion",
-        6: "credential-access",
-        7: "discovery",
-        8: "lateral-movement",
-        9: "collection",
-        10: "command-and-control",
-        11: "exfiltration",
-        12: "impact"
+        3: "multiple",
+        4: "persistence",
+        5: "privilege-escalation",
+        6: "defense-evasion",
+        7: "credential-access",
+        8: "discovery",
+        9: "lateral-movement",
+        10: "collection",
+        11: "command-and-control",
+        12: "exfiltration",
+        13: "impact"
     }
     
     def __init__(self,abilities) -> None:
@@ -72,7 +73,6 @@ class calculateRewrd:
         req_ok = self.check_req_ok(ability, unlocked_reqs)
         req_match = self.check_req_match(ability,target_requirements)  
         new_tactic = self.get_tactic_index(ability['tactic'])
-        last_tactic = self.get_tactic_index(last_tactic)
         prob_tactic = self.get_probability(last_tactic, new_tactic)
         self.count_abilities()
         reward = req_ok * (prob_tactic/self.abilitiesPerTactic[new_tactic] + req_match/len(target_requirements))

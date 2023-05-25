@@ -3,8 +3,26 @@ import calculateReward
 
 # Definir el entorno personalizado
 class CustomEnvironment:
+
+    tactics = {
+        0: "reconnaissance",
+        1: "initial-access",
+        2: "execution",
+        3: "multiple",
+        4: "persistence",
+        5: "privilege-escalation",
+        6: "defense-evasion",
+        7: "credential-access",
+        8: "discovery",
+        9: "lateral-movement",
+        10: "collection",
+        11: "command-and-control",
+        12: "exfiltration",
+        13: "impact"
+    }
+
     # Definimos el estado inicial como una tupla con 0 requisitos desbloqueados y la táctica inicial
-    initial_state = ([],"reconnaissance") 
+    initial_state = ([],0) 
     target = "ba0deadb-97ac-4a4c-aa81-21912fc90980"
     target_requirements = []
 
@@ -29,11 +47,20 @@ class CustomEnvironment:
         new_reqs = action["unlocks"]
         unlocked_reqs = unlocked_reqs + new_reqs
         new_tactic = action["tactic"]
+        new_tactic = self.get_tactic_index(new_tactic)
         new_state = (unlocked_reqs,new_tactic)
         return new_state
     
+    def get_tactic_index(self,tactic):
+        for index in self.tactics:
+            if self.tactics[index] == tactic:
+                return index
+        return
+    
     def check_if_done(self, next_state):
         unlocked_reqs = list(next_state[0])
+        if(len(unlocked_reqs)== 0):
+            return False
         for unlock in unlocked_reqs:
             if unlock not in unlocked_reqs:
                 return False
@@ -70,8 +97,8 @@ class trainer:
 
             for t in range(self.max_steps):
                 action = agent.act(state)  # Elegir una acción
-                action_sequence.append(action)  # Agregar la acción a la secuencia
-
+                action_sequence.append(action["id"])  # Agregar la acción a la secuencia
+                
                 next_state, reward, done = env.step(action)  # Tomar la acción en el entorno
 
                 agent.train(state, action, reward, next_state, done)  # Entrenar al agente
