@@ -15,7 +15,11 @@ class DQNModel(tf.keras.Model):
 
 
     def call(self, inputs):
-        x = self.dense1(x)
+        if len(inputs.shape) == 1:
+            x = tf.expand_dims(inputs, axis=0)  # Expande la dimensión de la entrada si es necesario
+        else:
+            x = inputs
+        x = self.dense1(inputs)
         x = self.dense2(x)
         return self.dense3(x)
 
@@ -50,7 +54,10 @@ class DQNAgent:
     def act(self, state):
         state_numeric = self.get_state_id(state)
         state_numeric = np.array(state_numeric)
-        state_numeric = np.expand_dims(state_numeric, axis=0)
+        
+        if len(state_numeric.shape) == 1:
+            state_numeric = np.expand_dims(state_numeric, axis=0)
+        
         state_tensor = tf.convert_to_tensor(state_numeric, dtype=tf.float32)
         
         if np.random.rand() <= self.epsilon:
@@ -61,7 +68,6 @@ class DQNAgent:
             return self.actions[action_index]
 
     def train(self, state, action, reward, next_state, done):
-        print(state,next_state,reward)
         state_numeric = self.get_state_id(state)
         next_state_numeric = self.get_state_id(next_state)
 
