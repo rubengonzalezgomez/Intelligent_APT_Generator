@@ -72,7 +72,6 @@ class CustomEnvironment:
         unlocked_reqs = list(self.state[0])
         reward = self.calculator.calculate(action,unlocked_reqs, self.state[1],self.target_requirements)
         done = self.check_if_done(next_state)
-        self.state = next_state
         return next_state, reward, done
 
 
@@ -96,11 +95,11 @@ class trainer:
             action_sequence = []  # Lista para almacenar las acciones tomadas en el episodio
 
             for t in range(self.max_steps):
+                print("ACT")
                 action = agent.act(state)  # Elegir una acción
                 action_sequence.append(action["id"])  # Agregar la acción a la secuencia
-                
                 next_state, reward, done = env.step(action)  # Tomar la acción en el entorno
-
+    
                 agent.train(state, action, reward, next_state, done)  # Entrenar al agente
 
                 state = next_state  # Actualizar el estado actual
