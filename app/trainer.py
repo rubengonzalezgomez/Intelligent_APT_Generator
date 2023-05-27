@@ -47,6 +47,7 @@ class CustomEnvironment:
         new_reqs = action["unlocks"]
         unlocked_reqs = unlocked_reqs + new_reqs
         new_tactic = action["tactic"]
+        print(new_tactic)
         new_tactic = self.get_tactic_index(new_tactic)
         new_state = (unlocked_reqs,new_tactic)
         return new_state
@@ -95,7 +96,6 @@ class trainer:
             action_sequence = []  # Lista para almacenar las acciones tomadas en el episodio
 
             for t in range(self.max_steps):
-                print("ACT")
                 action = agent.act(state)  # Elegir una acción
                 action_sequence.append(action["id"])  # Agregar la acción a la secuencia
                 next_state, reward, done = env.step(action)  # Tomar la acción en el entorno

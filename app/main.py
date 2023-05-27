@@ -39,14 +39,14 @@ print("\n\nBIENVENIDO A INTELLIGENT APT\n\n")
 
 # Cargamos todas las habilidades de Caldera
 api = api.comunicator()
-api.get_abilities(args.cookie)
-print("Habilidades de Mitre Caldera cargadas\n")
+if(api.get_abilities(args.cookie)):
+    print("Habilidades de Mitre Caldera cargadas\n")
 
-# Parseamos las habilidades obtenidas dependiendo de la plataforma seleccionada
-platform = platform_translator(args.platform)
-parser = parser_ability.parser()
-abilities = parser.filter_platform(platform)
+    # Parseamos las habilidades obtenidas dependiendo de la plataforma seleccionada
+    platform = platform_translator(args.platform)
+    parser = parser_ability.parser()
+    abilities = parser.filter_platform(platform)
 
-# Instanciamos el objeto que crea y entrena a la red neuronal
-trainer = trainer.trainer(100,5,abilities) 
-trainer.train()
+    # Instanciamos el objeto que crea y entrena a la red neuronal
+    trainer = trainer.trainer(100,5,abilities) 
+    trainer.train()

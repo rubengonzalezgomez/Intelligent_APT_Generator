@@ -28,7 +28,7 @@ class comunicator:
         status = response.status_code
         if status != 200:
             print("ERROR. PETICIÓN NO VALIDA.")
-            return
+            return None
 
         # Devolvemos el objeto respuesta
         return response
@@ -39,14 +39,13 @@ class comunicator:
 
         # Ejecutar petición y transformar a JSON
         response = self.send_request(cookie,'abilities')
-
-        if response is not None:
+        if response is None:
+            return False
+        else:
             response = response.json()
-
             # Guardamos la salida en un fichero JSON
             with open('../data/abilities.json', 'w') as archivo:
                 json.dump(response,archivo)
-
-
+            return True
     
 
