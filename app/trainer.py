@@ -42,12 +42,11 @@ class CustomEnvironment:
         self.state = self.initial_state
         return self.state
 
-    def calculate_next_state(self,action):
-        unlocked_reqs = list(self.state[0])
+    def calculate_next_state(self,action,current_state):
+        unlocked_reqs = list(current_state[0])
         new_reqs = action["unlocks"]
         unlocked_reqs = unlocked_reqs + new_reqs
         new_tactic = action["tactic"]
-        print(new_tactic)
         new_tactic = self.get_tactic_index(new_tactic)
         new_state = (unlocked_reqs,new_tactic)
         return new_state
@@ -59,19 +58,19 @@ class CustomEnvironment:
         return
     
     def check_if_done(self, next_state):
-        unlocked_reqs = list(next_state[0])
+        unlocked_reqs = list(next_state[0]) # Requisitos desbloqueados
         if(len(unlocked_reqs)== 0):
             return False
         for unlock in unlocked_reqs:
-            if unlock not in unlocked_reqs:
+            if unlock not in self.target_requirements:
                 return False
         return True
 
-    def step(self, action):
+    def step(self, action, current_state):
         # Tomar la acción en el entorno y obtener el siguiente estado, la recompensa y la señal de finalización
-        next_state = self.calculate_next_state(action)
-        unlocked_reqs = list(self.state[0])
-        reward = self.calculator.calculate(action,unlocked_reqs, self.state[1],self.target_requirements)
+        next_state = self.calculate_next_state(action,current_state)
+        unlocked_reqs = list(next_state[0])
+        reward = self.calculator.calculate(action,unlocked_reqs, next_state[1],self.target_requirements)
         done = self.check_if_done(next_state)
         return next_state, reward, done
 
@@ -91,20 +90,20 @@ class trainer:
 
         # Bucle principal de entrenamiento
         for episode in range(self.num_episodes):
-            state = env.reset()  # Reiniciar el entorno para un nuevo episodio
+            self.state = env.reset()  # Reiniciar el entorno para un nuevo episodio
 
             action_sequence = []  # Lista para almacenar las acciones tomadas en el episodio
 
             for t in range(self.max_steps):
-                action = agent.act(state)  # Elegir una acción
+                action = agent.act(self.state)  # Elegir una acción
                 action_sequence.append(action["id"])  # Agregar la acción a la secuencia
-                next_state, reward, done = env.step(action)  # Tomar la acción en el entorno
-    
-                agent.train(state, action, reward, next_state, done)  # Entrenar al agente
+                next_state, reward, done = env.step(action,self.state)  # Tomar la acción en el entorno
 
-                state = next_state  # Actualizar el estado actual
+                agent.train(self.state, action, reward, next_state, done)  # Entrenar al agente
 
+                self.state = (next_state[0], next_state[1])  # Actualizar el estado actual
                 if done:
+                    print("DONE")
                     break
 
             print(f"Episodio {episode+1}: Acciones tomadas {action_sequence}")
