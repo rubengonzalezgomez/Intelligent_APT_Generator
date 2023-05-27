@@ -44,18 +44,23 @@ class calculateRewrd:
         return cont_match
 
     def get_probability(self,last_tactic,next_tactic):
-        weight =  (float)(next_tactic - last_tactic) # Posición de la nueva táctica con respecto la última
-
-        # Si la táctica a evaluar es anterior a la última ejecutada la probabilidad será 0
-        # En otro caso se aplica la fórmula P = 0.6 * 0.4(posición respecto la última táctica ejecutada)
-        if(weight < 0):    
-            probability = 0
+        # Si el nombre de la táctica no se encuentra en la matriz de Mitre, la probabilidad de ese comando es 0
+        if next_tactic is None:
+            return 0
         else:
-            probability = 0.6 * (0.4 **(weight))        
+            weight =  (float)(next_tactic - last_tactic) # Posición de la nueva táctica con respecto la última
 
-        return probability
+            # Si la táctica a evaluar es anterior a la última ejecutada la probabilidad será 0
+            # En otro caso se aplica la fórmula P = 0.6 * 0.4(posición respecto la última táctica ejecutada)
+            if(weight < 0):    
+                probability = 0
+            else:
+                probability = 0.6 * (0.4 **(weight))        
+
+            return probability
 
     def get_tactic_index(self,tactic):
+        
         for index in self.tactics:
             if self.tactics[index] == tactic:
                 return index
