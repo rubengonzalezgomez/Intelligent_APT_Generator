@@ -70,7 +70,7 @@ class CustomEnvironment:
         # Tomar la acción en el entorno y obtener el siguiente estado, la recompensa y la señal de finalización
         next_state = self.calculate_next_state(action,current_state)
         unlocked_reqs = list(next_state[0])
-        reward = self.calculator.calculate(action,unlocked_reqs, next_state[1],self.target_requirements)
+        reward = self.calculator.calculate(action,unlocked_reqs, current_state[1],self.target_requirements)
         done = self.check_if_done(next_state)
         return next_state, reward, done
 
@@ -88,16 +88,22 @@ class trainer:
         env = CustomEnvironment(self.actions)
         agent = NN.DQNAgent(self.actions)
 
+        best_action_sequence = [] # Lista para almacenar la mejor secencia de acciones
+        max_reward = 0 # Mayor recompensa de secuencia de acciones
+
         # Bucle principal de entrenamiento
         for episode in range(self.num_episodes):
             self.state = env.reset()  # Reiniciar el entorno para un nuevo episodio
 
             action_sequence = []  # Lista para almacenar las acciones tomadas en el episodio
+            accumulate_reward = 0 # Recompensa acumulada
 
             for t in range(self.max_steps):
                 action = agent.act(self.state)  # Elegir una acción
                 action_sequence.append(action["id"])  # Agregar la acción a la secuencia
                 next_state, reward, done = env.step(action,self.state)  # Tomar la acción en el entorno
+            
+                accumulate_reward += reward
 
                 agent.train(self.state, action, reward, next_state, done)  # Entrenar al agente
 
@@ -105,10 +111,16 @@ class trainer:
                 if done:
                     print("DONE")
                     break
-
+            
             print(f"Episodio {episode+1}: Acciones tomadas {action_sequence}")
+            print("Recompensa total: ", accumulate_reward)
 
-        # Obtener la secuencia de acciones del mejor episodio
-        best_action_sequence = action_sequence
+            # Actualización mejor secuencia de acciones
+            if accumulate_reward > max_reward:
+                max_reward = accumulate_reward
+                best_action_sequence = action_sequence
 
         print("Mejor secuencia de acciones:", best_action_sequence)
+        print("Recompensa: ", max_reward)
+
+        return best_action_sequence

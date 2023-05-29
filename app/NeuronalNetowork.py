@@ -1,8 +1,6 @@
 import tensorflow as tf
 import numpy as np
 import random
-import json
-from sklearn.preprocessing import OneHotEncoder
 
 # Definir la red neuronal para el modelo DQN
 class DQNModel(tf.keras.Model):
