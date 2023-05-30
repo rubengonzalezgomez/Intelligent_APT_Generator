@@ -99,7 +99,13 @@ class trainer:
             accumulate_reward = 0 # Recompensa acumulada
 
             for t in range(self.max_steps):
-                action = agent.act(self.state)  # Elegir una acción
+                # Evitar que se repitan acciones
+                repeat = True
+                while repeat:
+                    action = agent.act(self.state)  # Elegir una acción
+                    if action["id"] not in action_sequence:
+                        repeat = False
+                print(action["tactic"])
                 action_sequence.append(action["id"])  # Agregar la acción a la secuencia
                 next_state, reward, done = env.step(action,self.state)  # Tomar la acción en el entorno
             

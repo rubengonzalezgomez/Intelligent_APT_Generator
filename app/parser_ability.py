@@ -27,32 +27,33 @@ class parser:
 
         # Recorremos el objeto JSON y creamos el nuevo JSON
         for element in init_json:
-            executor = element["executors"][0]
-            parser = executor['parsers']
-            
-            requirements = []
-            if len(element['requirements']) != 0:
-                for i in element['requirements']:
-                    requirements.append(i["relationship_match"][0]["source"])
+            if(element["tactic"] != "build-capabilities" and element["tactic"]!="technical-information-gathering"):      # No añadimos tácticas que no están en MITRE
+                executor = element["executors"][0]
+                parser = executor['parsers']
+                
+                requirements = []
+                if len(element['requirements']) != 0:
+                    for i in element['requirements']:
+                        requirements.append(i["relationship_match"][0]["source"])
 
-            unlocks = []
-            if len(parser) != 0:
-                for i in parser[0]["parserconfigs"]:
-                    unlocks.append(i["source"])
-            
-            new_obj = {
-                "id":  element["ability_id"],
-                "ability_name": element["name"],
-                "description": element["description"],
-                "tactic":  element["tactic"],
-                "technique":  element["technique_name"],
-                "platform": executor["platform"],
-                "requirements":  requirements,
-                "command":  executor["command"],
-                "unlocks":  unlocks,
-            }
+                unlocks = []
+                if len(parser) != 0:
+                    for i in parser[0]["parserconfigs"]:
+                        unlocks.append(i["source"])
+                
+                new_obj = {
+                    "id":  element["ability_id"],
+                    "ability_name": element["name"],
+                    "description": element["description"],
+                    "tactic":  element["tactic"],
+                    "technique":  element["technique_name"],
+                    "platform": executor["platform"],
+                    "requirements":  requirements,
+                    "command":  executor["command"],
+                    "unlocks":  unlocks,
+                }
 
-            final_json.append(new_obj)
+                final_json.append(new_obj)
         
         # Escribimos en un fichero para que sea más fácil de visualizar y nos ayude en el desarrollo pero NO es necesario
         with open('../data/' + platform + '_abilities_parsered.json','w') as f:

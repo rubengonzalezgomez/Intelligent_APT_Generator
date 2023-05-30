@@ -23,12 +23,8 @@ class calculateRewrd:
     def __init__(self,abilities) -> None:
         self.abilities = abilities # Lista de todas las habilidades
         self.abilitiesPerTactic = [0] * len(self.tactics) # Número de habilidades por táctica
-        self.abilities_executed = []
 
     def check_ability(self,ability, unlocked_reqs):
-        if ability["id"] in self.abilities_executed:
-            return -1
-        
         requirementes = ability['requirements']
         if requirementes: 
             for i in requirementes:
@@ -81,6 +77,5 @@ class calculateRewrd:
             return 0
         prob_tactic = self.get_probability(last_tactic, new_tactic)
         self.count_abilities()
-        self.abilities_executed.append(ability["id"])
         reward = (req_ok * (prob_tactic/self.abilitiesPerTactic[new_tactic])) + unlocks_score
         return reward
