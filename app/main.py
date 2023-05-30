@@ -51,7 +51,7 @@ if(api.get_abilities(args.cookie)):
     trainer = trainer.trainer(30,10,abilities) 
     action_sequence = trainer.train()
 
-    # Creamos la operación en CALERA
-    #api.create_operation(args.cookie,action_sequence)
-    #print("APT INICIADA")
+    # Creamos la operación en CALDERA
+    api.create_operation(args.cookie,action_sequence)
+    print("APT INICIADA")
 
