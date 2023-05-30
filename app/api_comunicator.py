@@ -33,7 +33,6 @@ class comunicator:
             }
             json_data = json.dumps(data)  # Codificar los datos como JSON
             response = session.post(api_url, headers=headers,data=json_data)
-            print(response)
 
         # Comprobamos el estado de la respuesta y la devolvemos en caso de ser correcta
         status = response.status_code
