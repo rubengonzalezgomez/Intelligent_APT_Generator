@@ -123,4 +123,6 @@ class trainer:
         print("Mejor secuencia de acciones:", best_action_sequence)
         print("Recompensa: ", max_reward)
 
+        # Añadimos el comando objetivo
+        best_action_sequence.append(env.target)
         return best_action_sequence

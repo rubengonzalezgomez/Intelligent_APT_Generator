@@ -30,7 +30,7 @@ class calculateRewrd:
         if requirementes: 
             for i in requirementes:
                 if i not in(unlocked_reqs):
-                    return 0
+                    return -1
         return 1
 
     def check_req_match(self, ability, target_requirements):
@@ -78,6 +78,5 @@ class calculateRewrd:
             return 0
         prob_tactic = self.get_probability(last_tactic, new_tactic)
         self.count_abilities()
-        print(len(ability["unlocks"]))
-        reward = req_ok * (prob_tactic/self.abilitiesPerTactic[new_tactic] + len(ability["unlocks"]) + req_match/len(target_requirements))
+        reward = req_ok * (prob_tactic/self.abilitiesPerTactic[new_tactic] + len(ability["unlocks"]) + 10*req_match)
         return reward
