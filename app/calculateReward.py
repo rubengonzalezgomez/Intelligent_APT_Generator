@@ -1,5 +1,3 @@
-import json
-
 
 class calculateRewrd:
 
@@ -22,25 +20,24 @@ class calculateRewrd:
     
     def __init__(self,abilities) -> None:
         self.abilities = abilities # Lista de todas las habilidades
-        self.abilitiesPerTactic = [0] * len(self.tactics) # Número de habilidades por táctica
 
     def check_ability(self,ability, unlocked_reqs):
         requirementes = ability['requirements']
         if requirementes: 
             for i in requirementes:
                 if i not in(unlocked_reqs):
-                    return -1
+                    return 0
         return 1
 
     def check_req_match(self, ability, target_requirements):
         unlocks = ability['unlocks']
-        score = 0
+        score = 1
 
         for i in unlocks:
             if i in(target_requirements):
-                score += 10
+                score += 20
             else:
-                score += 1
+                score += 5
         return score
 
     def get_probability(self,last_tactic,next_tactic):
@@ -50,8 +47,9 @@ class calculateRewrd:
         if(weight < 0):    
             probability = 0
         else:
-            probability = 0.6 * (0.4 **(weight))        
-        return probability
+            probability = 0.6 * (0.4 **(weight))
+        # Devolvemos el valor multiplicado por 10 para darle mayor importancia a la hora de calcular la reward
+        return 10*probability   
 
     def get_tactic_index(self,tactic):
         
@@ -59,14 +57,6 @@ class calculateRewrd:
             if self.tactics[index] == tactic:
                 return index
         return
-
-    def count_abilities(self):
-
-        for elem in self.abilities:
-            tactic = elem['tactic']
-            for i in self.tactics:
-                if self.tactics[i] == tactic:
-                    self.abilitiesPerTactic[i] += 1
     
     def calculate(self,ability,unlocked_reqs, last_tactic, target_requirements):
         req_ok = self.check_ability(ability, unlocked_reqs)
@@ -76,6 +66,5 @@ class calculateRewrd:
         if new_tactic is None:
             return 0
         prob_tactic = self.get_probability(last_tactic, new_tactic)
-        self.count_abilities()
-        reward = (req_ok * (prob_tactic/self.abilitiesPerTactic[new_tactic])) + unlocks_score
+        reward = (req_ok * prob_tactic) + unlocks_score
         return reward

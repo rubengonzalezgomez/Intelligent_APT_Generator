@@ -23,7 +23,7 @@ class CustomEnvironment:
 
     # Definimos el estado inicial como una tupla con 0 requisitos desbloqueados y la táctica inicial
     initial_state = ([],0) 
-    target = "ba0deadb-97ac-4a4c-aa81-21912fc90980"
+    target = "be4801446e4452c2a3e53dbe57c7a365"
     target_requirements = []
 
     def __init__(self, actions):
@@ -105,7 +105,6 @@ class trainer:
                     action = agent.act(self.state)  # Elegir una acción
                     if action["id"] not in action_sequence:
                         repeat = False
-                print(action["tactic"])
                 action_sequence.append(action["id"])  # Agregar la acción a la secuencia
                 next_state, reward, done = env.step(action,self.state)  # Tomar la acción en el entorno
             
