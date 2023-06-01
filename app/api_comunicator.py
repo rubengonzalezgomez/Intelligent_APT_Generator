@@ -37,6 +37,9 @@ class comunicator:
         # Comprobamos el estado de la respuesta y la devolvemos en caso de ser correcta
         status = response.status_code
         if status != 200:
+            print(response.status_code)
+            print(response.reason)
+            print(response._content)
             print("ERROR. PETICIÓN NO VALIDA.")
             return None
 
