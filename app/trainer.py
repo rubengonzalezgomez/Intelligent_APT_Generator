@@ -23,7 +23,7 @@ class CustomEnvironment:
 
     # Definimos el estado inicial como una tupla con 0 requisitos desbloqueados y la táctica inicial
     initial_state = ([],0) 
-    target = "be4801446e4452c2a3e53dbe57c7a365"
+    target = "ea713bc4-63f0-491c-9a6f-0b01d560b87e"
     target_requirements = []
 
     def __init__(self, actions):
