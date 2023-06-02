@@ -17,9 +17,7 @@ class comunicator:
         if protocol == 0:
             # Definir cabeceras
             headers = {
-                'Host': 'localhost:8888',
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Origin': 'http://localhost:8888',
                 'Accept': 'application/json',
                 'Cookie' : "API_SESSION="+cookie
                 }

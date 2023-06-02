@@ -1,6 +1,7 @@
 import tensorflow as tf
 import numpy as np
 import random
+from tf_agents.replay_buffers import tf_uniform_replay_buffer
 
 # Definir la red neuronal para el modelo DQN
 class DQNModel(tf.keras.Model):
@@ -22,10 +23,10 @@ class DQNAgent:
     def __init__(self, actions):
         self.actions = actions
         self.num_actions = len(actions)
-        self.state_dict = {}
+        self.state_dict = {} 
         self.counter = 0
         self.state_size = 2  # Los estados son tuplas compuestas por una lista de requisitos desbloqueados y la última táctica ejecutada
-        self.epsilon = 1.0
+        self.epsilon = 2
         self.epsilon_decay = 0.99
         self.epsilon_min = 0.01
         self.model = DQNModel(self.num_actions)
@@ -82,6 +83,7 @@ class DQNAgent:
         target_f = self.model.predict(state_tensor)
         target_f[0][self.actions.index(action)] = target
         self.model.fit(state_tensor, target_f, epochs=1, verbose=0)
+
 
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay

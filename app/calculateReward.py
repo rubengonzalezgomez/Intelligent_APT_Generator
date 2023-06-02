@@ -29,18 +29,15 @@ class calculateRewrd:
         for i in unlocks:
             if i in(pending_reqs):
                 score += 10
-            #else:
-             #   score += 5
+            else:
+                score += 5
         return score
 
-   ## def get_probability(self,last_tactic,next_tactic):
+    def get_probability(self,last_tactic,next_tactic):
         weight =  (float)(abs(last_tactic - next_tactic)) # Posición de la nueva táctica con respecto la última
-        # Si la táctica a evaluar es anterior a la última ejecutada la probabilidad será 0
-        # En otro caso se aplica la fórmula P = 0.6 * 0.4(posición respecto la última táctica ejecutada)
-        if(weight < 0):    
-            probability = 0
-        else:
-            probability = 0.5 * (0.5 **(weight))
+        
+        # Cuanto más cerca esté de la última táctica mayor puntuación
+        probability = 0.5 * (0.5 **(weight))
         # Devolvemos el valor multiplicado por 10 para darle mayor importancia a la hora de calcular la reward
         return 10*probability   
 
@@ -58,6 +55,7 @@ class calculateRewrd:
         # Si el nombre de la táctica no se encuentra en la matriz de Mitre, la probabilidad de ese comando es 0
         if new_tactic is None:
             return 0
-        #prob_tactic = self.get_probability(last_tactic, new_tactic)
-        reward = unlocks_score/90
+        prob_tactic = self.get_probability(last_tactic, new_tactic)
+
+        reward = prob_tactic * unlocks_score
         return reward
