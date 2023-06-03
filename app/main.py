@@ -48,8 +48,8 @@ if(api.get_abilities(args.cookie)):
     abilities = parser.filter_platform(platform)
 
     # Instanciamos el objeto que crea y entrena a la red neuronal
-    trainer = trainer.trainer(50,10,abilities) 
-    action_sequence = trainer.train()
+    trainer = trainer.Trainer(100,10,abilities,10000) 
+    action_sequence = trainer.train(10,10)
 
     # Creamos la operación en CALDERA
     api.create_operation(args.cookie,action_sequence)
