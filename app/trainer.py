@@ -1,6 +1,7 @@
 import tensorflow as tf
 import numpy as np
 import random
+import matplotlib.pyplot as plt
 import calculateReward
 import NeuronalNetowork
 
@@ -140,6 +141,10 @@ class Trainer:
         max_reward = 0
         accumulate_reward = 0
 
+        # Listas para la representación gráfica
+        avg_returns = []
+        episodes = []
+
         for episode in range(self.num_episodes):
             state = env.reset()
             action_sequence = [env.target]
@@ -174,12 +179,22 @@ class Trainer:
             # Calculamos la media de las recompensas devueltas cada cierto tiempo para evaluar la calidad del modelo
             if (episode + 1) % evaluate_every == 0:
                     avg_return = accumulate_reward / evaluate_episodes
+                    avg_returns.append(avg_return)
+                    episodes.append(episode + 1)    
                     print(f"Average return after {episode+1} episodes: {avg_return}")
                     accumulate_reward = 0
                     
             if total_reward > max_reward:
                 max_reward = total_reward
                 best_action_sequence = action_sequence
+
+        # Representar gráficamente los resultados
+        plt.plot(episodes, avg_returns)
+        plt.xlabel('Episodes')
+        plt.ylabel('Average Return')
+        plt.title('Average Return over Episodes')
+        plt.show()
+
 
         print("Best action sequence:", best_action_sequence[::-1])
         print("Reward: ", max_reward)
