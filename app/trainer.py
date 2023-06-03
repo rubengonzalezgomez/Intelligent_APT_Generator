@@ -24,7 +24,7 @@ class CustomEnvironment:
         13: "impact"
     }
 
-    target = "6469befa-748a-4b9c-a96d-f191fde47d89"
+    target = "be4801446e4452c2a3e53dbe57c7a365"
 
     def __init__(self, actions):
         self.actions = actions
@@ -159,6 +159,9 @@ class Trainer:
 
                 action_sequence.append(action["id"])
                 next_state, reward, done = env.step(action, state)
+
+                if done:
+                    reward += 200 # Si se consigue el objetivo aumentamos la recompensa
 
                 total_reward += reward # Recompensa total de las acciones tomadas
 
