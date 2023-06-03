@@ -28,8 +28,9 @@ class calculateRewrd:
 
         for i in unlocks:
             if i in(pending_reqs):
-                score += 10
+                score += 20
             else:
+                
                 score += 5
         return score
 
@@ -55,6 +56,7 @@ class calculateRewrd:
         # Si el nombre de la táctica no se encuentra en la matriz de Mitre, la probabilidad de ese comando es 0
         if new_tactic is None:
             return 0
+        
         prob_tactic = self.get_probability(last_tactic, new_tactic)
 
         reward = prob_tactic * unlocks_score

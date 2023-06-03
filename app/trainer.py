@@ -24,7 +24,7 @@ class CustomEnvironment:
         13: "impact"
     }
 
-    target = "be4801446e4452c2a3e53dbe57c7a365"
+    target = "6469befa-748a-4b9c-a96d-f191fde47d89"
 
     def __init__(self, actions):
         self.actions = actions
@@ -183,7 +183,10 @@ class Trainer:
                     episodes.append(episode + 1)    
                     print(f"Average return after {episode+1} episodes: {avg_return}")
                     accumulate_reward = 0
-                    
+
+            if (episode + 1) % evaluate_episodes == 0:
+                accumulate_reward = 0
+
             if total_reward > max_reward:
                 max_reward = total_reward
                 best_action_sequence = action_sequence

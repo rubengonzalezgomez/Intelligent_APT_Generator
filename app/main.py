@@ -1,5 +1,3 @@
-import sys
-import time
 import api_comunicator as api
 import parser_ability
 import argparse
@@ -37,7 +35,6 @@ def platform_translator(platform):
 
 # INICIO EJECUCIÓN
 print("\n\nBIENVENIDO A INTELLIGENT APT\n\n")
-start_time = time.time()
 
 # Cargamos todas las habilidades de Caldera
 api = api.comunicator()
@@ -56,8 +53,3 @@ if(api.get_abilities(args.cookie)):
     # Creamos la operación en CALDERA
     api.create_operation(args.cookie,action_sequence)
     print("APT INICIADA")
-    end_time = time.time()
-    execution_time = (end_time - start_time) / 60
-
-    # Imprime el tiempo de ejecución
-    print(f"Ha tardado {execution_time} minutos en ejecutarse.")
