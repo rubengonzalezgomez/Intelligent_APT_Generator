@@ -26,8 +26,8 @@ class DQNAgent:
         self.state_dict = {}
         self.counter = 0
         self.state_size = 2
-        self.epsilon = 3
-        self.epsilon_decay = 0.99
+        self.epsilon = 1
+        self.epsilon_decay = 0.999
         self.epsilon_min = 0.01
         self.batch_size = 64
         self.model = DQNModel(self.num_actions)
@@ -55,7 +55,6 @@ class DQNAgent:
             q_values = self.model(state_tensor)
             action_index = tf.argmax(q_values[0]).numpy()
             action = self.actions[action_index]
-        self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)
         return action
 
     def train(self, batch):
@@ -79,3 +78,6 @@ class DQNAgent:
 
         gradients = tape.gradient(loss, self.model.trainable_variables)
         self.optimizer.apply_gradients(zip(gradients, self.model.trainable_variables))
+
+        # Actualizamos epsilon
+        self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)

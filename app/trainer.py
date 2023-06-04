@@ -24,7 +24,7 @@ class CustomEnvironment:
         13: "impact"
     }
 
-    target = "be4801446e4452c2a3e53dbe57c7a365"
+    target = "6469befa-748a-4b9c-a96d-f191fde47d89"
 
     def __init__(self, actions):
         self.actions = actions
@@ -110,27 +110,6 @@ class Trainer:
                 break  # Terminar el bucle una vez que se haya encontrado la acción
 
         return position
-    
-    def compute_avg_return(self, environment, agent, num_episodes):
-        total_return = 0.0
-
-        for _ in range(num_episodes):
-            state = environment.reset()
-            episode_return = 0.0
-
-            for _ in range(self.max_steps):
-                action = agent.act(state)
-                next_state, reward, done = environment.step(action, state)
-                episode_return += reward
-                state = next_state
-
-                if done:
-                    break
-
-            total_return += episode_return
-
-        avg_return = total_return / num_episodes
-        return avg_return
 
     def train(self, evaluate_every, evaluate_episodes):
         env = CustomEnvironment(self.actions)
@@ -161,7 +140,9 @@ class Trainer:
                 next_state, reward, done = env.step(action, state)
 
                 if done:
+                    print("DONE")
                     reward += 200 # Si se consigue el objetivo aumentamos la recompensa
+                    print(agent.epsilon)
 
                 total_reward += reward # Recompensa total de las acciones tomadas
 
@@ -194,15 +175,19 @@ class Trainer:
                 max_reward = total_reward
                 best_action_sequence = action_sequence
 
-        # Representar gráficamente los resultados
-        plt.plot(episodes, avg_returns)
-        plt.xlabel('Episodes')
-        plt.ylabel('Average Return')
-        plt.title('Average Return over Episodes')
-        plt.show()
-
+       
+        self.print_average(episodes,avg_returns)
 
         print("Best action sequence:", best_action_sequence[::-1])
         print("Reward: ", max_reward)
 
         return best_action_sequence[::-1]
+    
+    
+    # Representar gráficamente los resultados
+    def print_average(self,episodes,avg_returns):
+        plt.plot(episodes, avg_returns)
+        plt.xlabel('Episodes')
+        plt.ylabel('Average Return')
+        plt.title('Average Return over Episodes')
+        plt.show()

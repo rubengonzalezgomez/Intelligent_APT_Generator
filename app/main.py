@@ -37,19 +37,17 @@ def platform_translator(platform):
 print("\n\nBIENVENIDO A INTELLIGENT APT\n\n")
 
 # Cargamos todas las habilidades de Caldera
-api = api.comunicator()
-if(api.get_abilities(args.cookie)):
-    print("Habilidades de Mitre Caldera cargadas\n")
+#api = api.comunicator()
+#if(api.get_abilities(args.cookie)):
+#    print("Habilidades de Mitre Caldera cargadas\n")
 
     # Parseamos las habilidades obtenidas dependiendo de la plataforma seleccionada
-    platform = platform_translator(args.platform)
-    parser = parser_ability.parser()
-    abilities = parser.filter_platform(platform)
-
-    # Instanciamos el objeto que crea y entrena a la red neuronal
-    trainer = trainer.Trainer(400,10,abilities,10000) 
-    action_sequence = trainer.train(40,10)
-
-    # Creamos la operación en CALDERA
-    api.create_operation(args.cookie,action_sequence)
-    print("APT INICIADA")
+platform = platform_translator(args.platform)
+parser = parser_ability.parser()
+abilities = parser.filter_platform(platform)
+# Instanciamos el objeto que crea y entrena a la red neuronal
+trainer = trainer.Trainer(1000,10,abilities,10000) 
+action_sequence = trainer.train(50,10)
+# Creamos la operación en CALDERA
+#api.create_operation(args.cookie,action_sequence)
+print("APT INICIADA")

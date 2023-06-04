@@ -28,7 +28,7 @@ class calculateRewrd:
 
         for i in unlocks:
             if i in(pending_reqs):
-                score += 30
+                score += 50
             else:
                 aux = prob_tactic * 5
                 score += aux
