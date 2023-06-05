@@ -47,20 +47,15 @@ if(api.get_abilities(args.cookie)):
 
     # Dependiendo del perfil del ataque se necesitará un conjunto de hiperparámetros
     target = args.target
-    steps = 0
-    learning_rate = 0
     if target == 0:
         steps = 4
-        learning_rate = 0.001
     elif target == 1:
         steps = 7
-        learning_rate = 0.01
     elif target == 2:
         steps = 10
-        learning_rate = 0.01
 
     # Instanciamos el objeto que crea y entrena a la red neuronal
-    trainer = trainer.Trainer(learning_rate,args.num_epochs,steps,abilities,500000,target) 
+    trainer = trainer.Trainer(args.num_epochs,steps,abilities,500000,target) 
     action_sequence,attack = trainer.train(args.evaluate)
     # Creamos la operación en CALDERA
     api.create_operation(args.cookie,action_sequence,attack)
