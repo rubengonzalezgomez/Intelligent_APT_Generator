@@ -107,7 +107,8 @@ class ReplayBuffer:
 
 
 class Trainer:
-    def __init__(self, num_episodes, max_steps, actions, replay_buffer_max_length, target):
+    def __init__(self, learning_rate, num_episodes, max_steps, actions, replay_buffer_max_length, target):
+        self.learning_rate = learning_rate
         self.actions = actions
         self.num_actions = len(actions)
         self.num_episodes = num_episodes
@@ -126,7 +127,7 @@ class Trainer:
 
     def train(self, evaluate_every):
         env = CustomEnvironment(self.actions,self.target)
-        agent = NeuronalNetowork.DQNAgent(self.actions, self.num_actions)
+        agent = NeuronalNetowork.DQNAgent(self.learning_rate,self.actions, self.num_actions)
         replay_buffer = ReplayBuffer(self.replay_buffer_max_length)
 
         best_action_sequence = [env.target]
