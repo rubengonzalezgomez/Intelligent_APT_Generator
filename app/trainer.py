@@ -24,7 +24,8 @@ class CustomEnvironment:
         13: "impact"
     }
 
-    target = "6469befa-748a-4b9c-a96d-f191fde47d89"
+    target = "ea713bc4-63f0-491c-9a6f-0b01d560b87e"
+
 
     def __init__(self, actions):
         self.actions = actions
@@ -111,7 +112,7 @@ class Trainer:
 
         return position
 
-    def train(self, evaluate_every, evaluate_episodes):
+    def train(self, evaluate_every):
         env = CustomEnvironment(self.actions)
         agent = NeuronalNetowork.DQNAgent(self.actions, self.num_actions)
         replay_buffer = ReplayBuffer(self.replay_buffer_max_length)
@@ -134,7 +135,7 @@ class Trainer:
                 while repeat:
                     action = agent.act(state)
                     if action["id"] not in action_sequence:
-                        repeat = False
+                        repeat = False 
 
                 action_sequence.append(action["id"])
                 next_state, reward, done = env.step(action, state)
@@ -142,7 +143,6 @@ class Trainer:
                 if done:
                     print("DONE")
                     reward += 200 # Si se consigue el objetivo aumentamos la recompensa
-                    print(agent.epsilon)
 
                 total_reward += reward # Recompensa total de las acciones tomadas
 
@@ -162,19 +162,15 @@ class Trainer:
 
             # Calculamos la media de las recompensas devueltas cada cierto tiempo para evaluar la calidad del modelo
             if (episode + 1) % evaluate_every == 0:
-                    avg_return = accumulate_reward / evaluate_episodes
+                    avg_return = accumulate_reward / evaluate_every
                     avg_returns.append(avg_return)
                     episodes.append(episode + 1)    
-                    print(f"Average return after {episode+1} episodes: {avg_return}")
+                    print(f"Average return after {episode+1} epochs: {avg_return}")
                     accumulate_reward = 0
-
-            if (episode + 1) % evaluate_episodes == 0:
-                accumulate_reward = 0
 
             if total_reward > max_reward:
                 max_reward = total_reward
                 best_action_sequence = action_sequence
-
        
         self.print_average(episodes,avg_returns)
 
