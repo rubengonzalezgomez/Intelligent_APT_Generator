@@ -57,7 +57,7 @@ if(api.get_abilities(args.cookie)):
 
     # Instanciamos el objeto que crea y entrena a la red neuronal
     trainer = trainer.Trainer(args.num_epochs,steps,abilities,500000,target) 
-    action_sequence = trainer.train(args.evaluate)
+    action_sequence,attack = trainer.train(args.evaluate)
     # Creamos la operación en CALDERA
-    api.create_operation(args.cookie,action_sequence)
+    api.create_operation(args.cookie,action_sequence,attack)
     print("APT INICIADA")

@@ -60,7 +60,7 @@ class comunicator:
             return True
     
 
-    def create_adversary(self,cookie,action_sequence):
+    def create_adversary(self,cookie,action_sequence, attack_name):
         # Generamos un id aleatorio para el adversario
         adversary_id = str(uuid.uuid4())
 
@@ -68,7 +68,7 @@ class comunicator:
             "description": "Adversay created by a neuronal network",
             "atomic_ordering": action_sequence,
             "adversary_id": adversary_id,
-            "name": "Intelligent APT",
+            "name": attack_name,
             "plugin": "stockpile",
             "objective": "495a9828-cab1-44dd-a0ca-66e58177d8cc",
             "tags": []
@@ -77,15 +77,17 @@ class comunicator:
         self.send_request(cookie,'adversaries',1,data)
         return adversary_id
 
-    def create_operation(self,cookie,action_sequence):
-        adversary = self.create_adversary(cookie,action_sequence)
+    def create_operation(self,cookie,action_sequence, attack_name):
+        name = "Intelligent " + attack_name
+
+        adversary = self.create_adversary(cookie,action_sequence,name)
         operation_id = str(uuid.uuid4())
         
         data = {
                 "source": {
                     "id": "ed32b9c3-9593-4c33-b0db-e2007315096b",
                 },
-                "name": "Intelligent APT Operation",
+                "name": name,
                 "id": operation_id,
                 "obfuscator":"plain-text",
                 "visibility":"51",

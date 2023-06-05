@@ -28,20 +28,20 @@ class CustomEnvironment:
         self.actions = actions
         self.state = None
         self.calculator = calculateReward.calculateRewrd(self.actions)
-        self.target = self.set_target(target)
+        self.target, self.attack = self.set_target(target)
 
     def set_target(self,target):
         # Crypto mining
         if target == 0:
-            return '46da2385-cf37-49cb-ba4b-a739c7a19de4'
+            return '46da2385-cf37-49cb-ba4b-a739c7a19de4', 'Crypto-Mining'
         
         # Disrupt wifi
         elif target == 1:
-            return '2fe2d5e6-7b06-4fc0-bf71-6966a1226731'
+            return '2fe2d5e6-7b06-4fc0-bf71-6966a1226731', 'DDoS'
         
         # Encrypt files
         elif target == 2:
-            return 'be4801446e4452c2a3e53dbe57c7a365' 
+            return 'be4801446e4452c2a3e53dbe57c7a365', 'Encrypter'
 
     def set_initial_state(self):
         for elem in self.actions:
@@ -189,7 +189,7 @@ class Trainer:
         print("Best action sequence:", best_action_sequence[::-1])
         print("Reward: ", max_reward)
 
-        return best_action_sequence[::-1]
+        return best_action_sequence[::-1],env.attack
     
     
     # Representar gráficamente los resultados
