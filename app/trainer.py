@@ -24,13 +24,24 @@ class CustomEnvironment:
         13: "impact"
     }
 
-    target = "ea713bc4-63f0-491c-9a6f-0b01d560b87e"
-
-
-    def __init__(self, actions):
+    def __init__(self, actions, target):
         self.actions = actions
         self.state = None
         self.calculator = calculateReward.calculateRewrd(self.actions)
+        self.target = self.set_target(target)
+
+    def set_target(self,target):
+        # Crypto mining
+        if target == 0:
+            return '46da2385-cf37-49cb-ba4b-a739c7a19de4'
+        
+        # Disrupt wifi
+        elif target == 1:
+            return '2fe2d5e6-7b06-4fc0-bf71-6966a1226731'
+        
+        # Encrypt files
+        elif target == 2:
+            return 'be4801446e4452c2a3e53dbe57c7a365' 
 
     def set_initial_state(self):
         for elem in self.actions:
@@ -96,12 +107,13 @@ class ReplayBuffer:
 
 
 class Trainer:
-    def __init__(self, num_episodes, max_steps, actions, replay_buffer_max_length):
+    def __init__(self, num_episodes, max_steps, actions, replay_buffer_max_length, target):
         self.actions = actions
         self.num_actions = len(actions)
         self.num_episodes = num_episodes
         self.max_steps = max_steps
         self.replay_buffer_max_length = replay_buffer_max_length
+        self.target = target
     
     def get_action_position(self,id):
         position = None
@@ -113,7 +125,7 @@ class Trainer:
         return position
 
     def train(self, evaluate_every):
-        env = CustomEnvironment(self.actions)
+        env = CustomEnvironment(self.actions,self.target)
         agent = NeuronalNetowork.DQNAgent(self.actions, self.num_actions)
         replay_buffer = ReplayBuffer(self.replay_buffer_max_length)
 

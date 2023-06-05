@@ -11,16 +11,14 @@ parser = argparse.ArgumentParser(description='Creación de una APT inteligente p
 parser.add_argument('-c', '--cookie', type=str, required=True, help='Valor de la cookie API_SESSION')
 parser.add_argument('-p', '--platform', type=int, choices=range(0, 3), required=True, help='Plataforma sobre la que se va a dValor de la cookie API_SESSIONesarrollar la APT. 0:Linux; 1:Windows; 2:Darwin')
 parser.add_argument('-ne', '--num_epochs', type=int, default=1000, help='Número de epochs durante las que se queire entrenar al modelo. Recomendable que el valor este entre 500 y 2000, dependiendo de la complejidad del problema')
-parser.add_argument('-s', '--steps', type=int, choices=range(4, 11),required=True, help='Número de comandos que tiene que elegir el modelo en cada iteración. Este valor debe estar entre 4 y 10')
 parser.add_argument('-e', '--evaluate', type=int, default=50, help='Cada cuántas epochs se debe evaluar el modelo')
+parser.add_argument('-t', '--target', type=int, choices=range(0, 3),required = True, help='Perfil del atacante. 0:Crypto mining; 1:Disrupt Wi-Fi; 2:Exfiltrate and encrypt files')
 
 # Parseamos los argumentos
 args = parser.parse_args()
 
 # Parseamos las habilidades de la plataforma seleccionada
 def platform_translator(platform):
-
-   
 
     dictionary_platform = {
         0: 'linux',
@@ -46,8 +44,19 @@ if(api.get_abilities(args.cookie)):
     platform = platform_translator(args.platform)
     parser = parser_ability.parser()
     abilities = parser.filter_platform(platform)
+
+    # Dependiendo del perfil del ataque se necesitará un cierto número de comandos por acción
+    target = args.target
+    steps = 0
+    if target == 0:
+        steps = 4
+    elif target == 1:
+        steps = 7
+    elif target == 2:
+        steps = 10
+
     # Instanciamos el objeto que crea y entrena a la red neuronal
-    trainer = trainer.Trainer(args.num_epochs,args.steps,abilities,500000) 
+    trainer = trainer.Trainer(args.num_epochs,steps,abilities,500000,target) 
     action_sequence = trainer.train(args.evaluate)
     # Creamos la operación en CALDERA
     api.create_operation(args.cookie,action_sequence)
