@@ -39,7 +39,7 @@ class calculateRewrd:
                 return index
         return
     
-    def calculate(self,ability, last_tactic, pending_reqs):
+    def calculate(self,ability,pending_reqs):
         
         new_tactic = self.get_tactic_index(ability['tactic'])
         

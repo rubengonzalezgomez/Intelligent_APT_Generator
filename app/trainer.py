@@ -37,7 +37,7 @@ class CustomEnvironment:
         
         # Disrupt wifi
         elif target == 1:
-            return '2fe2d5e6-7b06-4fc0-bf71-6966a1226731', 'DDoS'
+            return '2fe2d5e6-7b06-4fc0-bf71-6966a1226731', 'DoS'
         
         # Encrypt files
         elif target == 2:
@@ -84,7 +84,7 @@ class CustomEnvironment:
             return False
 
     def step(self, action, current_state):
-        reward = self.calculator.calculate(action, current_state[1], current_state[0])
+        reward = self.calculator.calculate(action, current_state[0])
         next_state = self.calculate_next_state(action, current_state)
         done = self.check_if_done(next_state)
         return next_state, reward, done
@@ -154,7 +154,7 @@ class Trainer:
 
                 if done:
                     print("DONE")
-                    reward += 200 # Si se consigue el objetivo aumentamos la recompensa
+                    reward += 100 # Si se consigue el objetivo aumentamos la recompensa
 
                 total_reward += reward # Recompensa total de las acciones tomadas
 
