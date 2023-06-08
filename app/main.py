@@ -39,21 +39,18 @@ print("\n\nBIENVENIDO A INTELLIGENT APT\n\n")
 api = api.comunicator()
 if(api.get_abilities(args.cookie)):
     print("Habilidades de Mitre Caldera cargadas\n")
-
     # Parseamos las habilidades obtenidas dependiendo de la plataforma seleccionada
     platform = platform_translator(args.platform)
     parser = parser_ability.parser()
     abilities = parser.filter_platform(platform)
-
     # Dependiendo del perfil del ataque se necesitará un conjunto de hiperparámetros
     target = args.target
     if target == 0:
         steps = 4
     elif target == 1:
-        steps = 7
+        steps = 6
     elif target == 2:
-        steps = 10
-
+        steps = 9
     # Instanciamos el objeto que crea y entrena a la red neuronal
     trainer = trainer.Trainer(args.num_epochs,steps,abilities,500000,target) 
     action_sequence,attack = trainer.train(args.evaluate)

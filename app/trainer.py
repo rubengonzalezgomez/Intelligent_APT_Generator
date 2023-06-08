@@ -41,7 +41,7 @@ class CustomEnvironment:
         
         # Encrypt files
         elif target == 2:
-            return 'be4801446e4452c2a3e53dbe57c7a365', 'Encrypter'
+            return '6e7e92c6-a8bc-47f7-8bb6-c55d967f652f', 'Encrypter'
 
     def set_initial_state(self):
         for elem in self.actions:
