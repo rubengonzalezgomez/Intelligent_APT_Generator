@@ -103,7 +103,7 @@ class ReplayBuffer:
     def sample(self, batch_size):
         batch = random.sample(self.buffer, batch_size)
         states, actions, rewards, next_states, dones = zip(*batch)
-        return np.array(states), np.array(actions), np.array(rewards), np.array(next_states), np.array(dones)
+        return np.array(states, dtype=object), np.array(actions, dtype=object), np.array(rewards, dtype=object), np.array(next_states, dtype=object), np.array(dones, dtype=object)
 
 
 class Trainer:

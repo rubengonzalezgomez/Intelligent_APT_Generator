@@ -48,12 +48,29 @@ if(api.get_abilities(args.cookie)):
     if target == 0:
         steps = 4
     elif target == 1:
-        steps = 6
+        steps = 7
     elif target == 2:
         steps = 9
     # Instanciamos el objeto que crea y entrena a la red neuronal
-    trainer = trainer.Trainer(args.num_epochs,steps,abilities,500000,target) 
+    trainer = trainer.Trainer(args.num_epochs,steps,abilities,50000,target) 
     action_sequence,attack = trainer.train(args.evaluate)
     # Creamos la operación en CALDERA
     api.create_operation(args.cookie,action_sequence,attack)
-    print("APT INICIADA")
+
+    dictionary = ["openssl","7z","gpg","ufw"]
+
+    output = "\n\nPara un correcto funcionamiento de la APT inteligente será necesario que el agente sobre el que se vaya a ejecutar esté desplegado con privilegios (ROOT)\n"
+    output += "Además será necesario que el agente cuente con los siguientes servicios:\n"
+
+    for word in dictionary:
+        for action in action_sequence:
+            for ability in abilities:
+                if (ability["id"] == action and word in ability["ability_name"]):
+                    output += word + "\n"
+
+    with open("../data/instructions.txt", "w") as archivo:
+        archivo.write(output)
+    
+    print(output)
+
+    print("\n\nAPT INICIADA")
