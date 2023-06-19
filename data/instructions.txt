@@ -3,4 +3,4 @@
 Para un correcto funcionamiento de la APT inteligente será necesario que el agente sobre el que se vaya a ejecutar esté desplegado con privilegios (ROOT)
 Además será necesario que el agente cuente con los siguientes servicios:
 openssl
-ufw
+gpg

@@ -32,15 +32,15 @@ class CustomEnvironment:
 
     def set_target(self,target):
         # Crypto mining
-        if target == 0:
+        if target == 1:
             return '46da2385-cf37-49cb-ba4b-a739c7a19de4', 'Crypto-Mining'
         
         # Disrupt wifi
-        elif target == 1:
+        elif target == 2:
             return '2fe2d5e6-7b06-4fc0-bf71-6966a1226731', 'DoS'
         
         # Encrypt files
-        elif target == 2:
+        elif target == 3:
             return '6e7e92c6-a8bc-47f7-8bb6-c55d967f652f', 'Encrypter'
 
     def set_initial_state(self):
