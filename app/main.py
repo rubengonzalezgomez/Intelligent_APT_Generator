@@ -38,9 +38,8 @@ print("\n\nBIENVENIDO A INTELLIGENT APT\n\n")
 # Cargamos todas las habilidades de Caldera
 api = api.comunicator()
 
-#if(api.get_abilities(args.cookie)):
-if True:
-    print("Habilidades de Mitre Caldera cargadas\n")
+if(api.get_abilities(args.cookie)):
+    print("Habilidades de MITRE Caldera cargadas\n")
     # Parseamos las habilidades obtenidas dependiendo de la plataforma seleccionada
     platform = platform_translator(args.platform)
     parser = parser_ability.parser()

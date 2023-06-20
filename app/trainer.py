@@ -132,9 +132,11 @@ class Trainer:
         best_action_sequence = [env.target]
         max_reward = 0
         accumulate_reward = 0
+        dones_counter = 0
 
         # Listas para la representación gráfica
         avg_returns = []
+        dones_list = []
         episodes = []
 
         for episode in range(self.num_episodes):
@@ -153,7 +155,7 @@ class Trainer:
                 next_state, reward, done = env.step(action, state)
 
                 if done:
-                    print("DONE")
+                    dones_counter += 1
                     reward += 100 # Si se consigue el objetivo aumentamos la recompensa
 
                 total_reward += reward # Recompensa total de las acciones tomadas
@@ -172,19 +174,23 @@ class Trainer:
             
             accumulate_reward += total_reward # Recompensa acumulada de varias vueltas para calcular la media
 
-            # Calculamos la media de las recompensas devueltas cada cierto tiempo para evaluar la calidad del modelo
+            # Calculamos el númerod de Dones y la media de las recompensas devueltas cada cierto tiempo para evaluar la calidad del modelo
             if (episode + 1) % evaluate_every == 0:
                     avg_return = accumulate_reward / evaluate_every
                     avg_returns.append(avg_return)
+                    dones_list.append(dones_counter)
                     episodes.append(episode + 1)    
                     print(f"Average return after {episode+1} epochs: {avg_return}")
+                    print(f"Dones after {episode+1} epochs: {dones_counter}\n\n")
                     accumulate_reward = 0
+                    dones_counter = 0
 
             if total_reward > max_reward:
                 max_reward = total_reward
                 best_action_sequence = action_sequence
        
         self.print_average(episodes,avg_returns)
+        self.print_dones(episodes,dones_list)
 
         print("Best action sequence:", best_action_sequence[::-1])
         print("Reward: ", max_reward)
@@ -192,10 +198,18 @@ class Trainer:
         return best_action_sequence[::-1],env.attack
     
     
-    # Representar gráficamente los resultados
+    # Representar gráficamente la media de las recompensas
     def print_average(self,episodes,avg_returns):
         plt.plot(episodes, avg_returns)
         plt.xlabel('Episodes')
         plt.ylabel('Average Return')
         plt.title('Average Return over Episodes')
+        plt.show()
+    
+     # Representar gráficamente el número de Dones
+    def print_dones(self,episodes,dones_conuter):
+        plt.plot(episodes, dones_conuter)
+        plt.xlabel('Episodes')
+        plt.ylabel('Number of Dones')
+        plt.title('Dones over Episodes')
         plt.show()
