@@ -38,7 +38,8 @@ print("\n\nBIENVENIDO A INTELLIGENT APT\n\n")
 # Cargamos todas las habilidades de Caldera
 api = api.comunicator()
 
-if(api.get_abilities(args.cookie)):
+#if(api.get_abilities(args.cookie)):
+if True:
     print("Habilidades de MITRE Caldera cargadas\n")
     # Parseamos las habilidades obtenidas dependiendo de la plataforma seleccionada
     platform = platform_translator(args.platform)
@@ -49,11 +50,11 @@ if(api.get_abilities(args.cookie)):
     if target == 1:
         steps = 4
     elif target == 2:
-        steps = 7
+        steps = 6
     elif target == 3:
-        steps = 8
+        steps = 7
     # Instanciamos el objeto que crea y entrena a la red neuronal
-    trainer = trainer.Trainer(args.num_epochs,steps,abilities,50000,target) 
+    trainer = trainer.Trainer(args.num_epochs,steps,abilities,100000,target) 
     action_sequence,attack = trainer.train(args.evaluate)
     # Creamos la operación en CALDERA
     api.create_operation(args.cookie,action_sequence,attack)
