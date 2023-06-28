@@ -7,11 +7,11 @@ class DQNModel(tf.keras.Model):
     def __init__(self,num_actions):
         super(DQNModel, self).__init__()
         self.dense1 = tf.keras.layers.Dense(24, activation='relu')
-        self.dropout1 = tf.keras.layers.Dropout(0.2)  # Agregar capa de Dropout
+        self.dropout1 = tf.keras.layers.Dropout(0.4)  # Agregar capa de Dropout
         self.dense2 = tf.keras.layers.Dense(24, activation='relu')
-        self.dropout2 = tf.keras.layers.Dropout(0.2)  # Agregar capa de Dropout con tasa de dropout 0.2
+        self.dropout2 = tf.keras.layers.Dropout(0.4)  # Agregar capa de Dropout
         self.dense3 = tf.keras.layers.Dense(num_actions, activation='linear')
-        self.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001), loss='mse')
+        self.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0006), loss='mse')
 
     def call(self, inputs):
         x = self.dense1(inputs)
@@ -29,9 +29,9 @@ class DQNAgent:
         self.epsilon = 1
         self.epsilon_decay = 0.999
         self.epsilon_min = 0.01
-        self.batch_size = 96
+        self.batch_size = 512
         self.model = DQNModel(self.num_actions)
-        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.0006)
 
     def get_state_id(self, state):
         requirements = tuple(state[0])

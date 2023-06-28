@@ -37,7 +37,7 @@ class CustomEnvironment:
         
         # Disrupt wifi
         elif target == 2:
-            return '2fe2d5e6-7b06-4fc0-bf71-6966a1226731', 'DoS'
+            return '2fe2d5e6-7b06-4fc0-bf71-6966a1226731', 'Disrupt WiFi'
         
         # Encrypt files
         elif target == 3:
@@ -145,12 +145,7 @@ class Trainer:
             total_reward = 0
 
             for t in range(self.max_steps):
-                repeat = True
-                while repeat:
-                    action = agent.act(state)
-                    if action["id"] not in action_sequence:
-                        repeat = False 
-
+                action = agent.act(state)
                 action_sequence.append(action["id"])
                 next_state, reward, done = env.step(action, state)
 
@@ -182,6 +177,8 @@ class Trainer:
                     episodes.append(episode + 1)    
                     print(f"Average return after {episode+1} epochs: {avg_return}")
                     print(f"Dones after {episode+1} epochs: {dones_counter}\n\n")
+                    print(agent.epsilon)
+                    print("\n\n")
                     accumulate_reward = 0
                     dones_counter = 0
 
